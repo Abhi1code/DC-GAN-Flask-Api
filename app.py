@@ -114,8 +114,8 @@ def predict():
       texture_list.append(selected_textures[0])
       texid = len(texture_list) - 1
     else:
-      selected_textures = [texture_list[request.form['texid']]]
-      texid = request.form['texid']
+      selected_textures = np.array([texture_list[int(request.form['texid'])]], dtype=object)
+      texid = int(request.form['texid'])
     #selected_textures = misc.random_latents(1, Gs)
 
     fake_images = Gs.run(selected_textures, colors, masks)
@@ -127,7 +127,6 @@ def predict():
     conv_image.save(buffered, format="PNG")
     img_str = base64.b64encode(buffered.getvalue())
     #jsonify({"image": str(img_str), "id": texid})
-    print(str(img_str)[0])
     return jsonify({"image": str(img_str)[2:-1], "id": texid});
 
 app.run()
